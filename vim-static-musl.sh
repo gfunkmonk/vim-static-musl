@@ -107,12 +107,14 @@ upx \
 python3-dev \
 perl-dev \
 perl && \
+wget "https://github.com/gfunkmonk/vim-static-musl/raw/refs/heads/main/tiny-vim.patch" && \
 tar xf vim-${VIM_VERSION}.tar.gz && \
 cd vim-${VIM_VERSION}/ && \
+patch -p1 --fuzz=4 < ../vim-tiny.patch && \
 ./configure CC='gcc' --disable-channel --disable-gpm --disable-gtktest --disable-gui --disable-netbeans --disable-nls --disable-selinux --disable-smack --disable-sysmouse --disable-xsmp --enable-multibyte --with-features=huge --with-tlib=ncursesw --without-x LDFLAGS='-static' CFLAGS='-Os -static -fno-stack-protector -no-pie' && \
 CC='gcc' make -j\$(nproc) && \
 strip src/vim && \
-upx --lzma src/vim"
+upx --ultra-brute src/vim"
 mkdir -p dist
 cp "./pasta/vim-${VIM_VERSION}/src/vim" "dist/vim-${ARCH}"
 if command -v file >/dev/null 2>&1; then echo -e "${ORANGE} File Info:  $(file "dist/vim-${ARCH}" | cut -d: -f2-)${NC}"; fi
