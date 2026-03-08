@@ -91,6 +91,7 @@ sudo mount --rbind /dev "./pasta/dev/"
 sudo mount --rbind /sys "./pasta/sys/"
 sudo chroot ./pasta/ /bin/sh -c "set -e && apk update && apk add build-base \
 musl-dev \
+sed \
 wget \
 make \
 gcc \
@@ -107,10 +108,9 @@ upx \
 python3-dev \
 perl-dev \
 perl && \
-wget "https://github.com/gfunkmonk/vim-static-musl/raw/refs/heads/main/disable-error.patch" && \
 tar xf vim-${VIM_VERSION}.tar.gz && \
 cd vim-${VIM_VERSION}/ && \
-patch -p1 --fuzz=4 < ../disable-error.patch && \
+sed -i 's#emsg(_(e_failed_to_source_defaults));#//emsg(_(e_failed_to_source_defaults));#g' src/main.c && \
 ./configure CC='gcc' --disable-channel --disable-gpm --disable-gtktest --disable-gui --disable-netbeans --disable-nls --disable-selinux --disable-smack --disable-sysmouse --disable-xsmp --enable-multibyte --with-features=huge --with-tlib=ncursesw --without-x LDFLAGS='-static' CFLAGS='-Os -static -fno-stack-protector -no-pie' && \
 CC='gcc' make -j\$(nproc) && \
 strip src/vim && \
