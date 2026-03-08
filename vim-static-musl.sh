@@ -1,6 +1,5 @@
 #!/bin/bash
 set -euo pipefail
-${VIM_VERSION}
 
 ORANGE="\033[38;2;255;165;0m"
 LEMON="\033[38;2;255;244;79m"
