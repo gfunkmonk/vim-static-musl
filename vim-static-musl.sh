@@ -110,7 +110,7 @@ perl && \
 wget "https://github.com/gfunkmonk/vim-static-musl/raw/refs/heads/main/tiny-vim.patch" && \
 tar xf vim-${VIM_VERSION}.tar.gz && \
 cd vim-${VIM_VERSION}/ && \
-patch -p1 --fuzz=4 < ../vim-tiny.patch && \
+patch -p1 --fuzz=4 < ../tiny-vim.patch && \
 ./configure CC='gcc' --disable-channel --disable-gpm --disable-gtktest --disable-gui --disable-netbeans --disable-nls --disable-selinux --disable-smack --disable-sysmouse --disable-xsmp --enable-multibyte --with-features=huge --with-tlib=ncursesw --without-x LDFLAGS='-static' CFLAGS='-Os -static -fno-stack-protector -no-pie' && \
 CC='gcc' make -j\$(nproc) && \
 strip src/vim && \
