@@ -91,6 +91,7 @@ sudo mount --rbind /dev "./pasta/dev/"
 sudo mount --rbind /sys "./pasta/sys/"
 sudo chroot ./pasta/ /bin/sh -c "set -e && apk update && apk add build-base \
 musl-dev \
+sed \
 wget \
 make \
 gcc \
@@ -109,10 +110,11 @@ perl-dev \
 perl && \
 tar xf vim-${VIM_VERSION}.tar.gz && \
 cd vim-${VIM_VERSION}/ && \
+sed -i 's#emsg(_(e_failed_to_source_defaults));#//emsg(_(e_failed_to_source_defaults));#g' src/main.c && \
 ./configure CC='gcc' --disable-channel --disable-gpm --disable-gtktest --disable-gui --disable-netbeans --disable-nls --disable-selinux --disable-smack --disable-sysmouse --disable-xsmp --enable-multibyte --with-features=huge --with-tlib=ncursesw --without-x LDFLAGS='-static' CFLAGS='-Os -static -fno-stack-protector -no-pie' && \
 CC='gcc' make -j\$(nproc) && \
 strip src/vim && \
-upx --lzma src/vim"
+upx --ultra-brute src/vim"
 mkdir -p dist
 cp "./pasta/vim-${VIM_VERSION}/src/vim" "dist/vim-${ARCH}"
 if command -v file >/dev/null 2>&1; then echo -e "${ORANGE} File Info:  $(file "dist/vim-${ARCH}" | cut -d: -f2-)${NC}"; fi
